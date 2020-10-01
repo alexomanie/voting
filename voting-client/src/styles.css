@@ -1,0 +1,77 @@
+@keyframes heartbeat {
+    0% {
+        transform: scale(0.95);
+    }
+    20% {
+        transform: scale(1);
+    }
+    40% {
+        transform: scale(0.95);
+    }
+    60% {
+        transform: scale(1);
+    }
+    80% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(0.95);
+    }
+}
+
+.heart {
+    position: relative;
+    width: 50px;
+    height: 45px;
+    animation: heartbeat 1s infinite;
+    animation-play-state: paused;
+}
+
+.heart:before,
+.heart:after {
+    position: absolute;
+    content: '';
+    left: 25px;
+    top: 0;
+    width: 25px;
+    height: 40px;
+    background: #e53e3e;
+    -moz-border-radius: 25px 25px 0 0;
+    border-radius: 25px 25px 0 0;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-transform-origin: 0 100%;
+    -moz-transform-origin: 0 100%;
+    -ms-transform-origin: 0 100%;
+    -o-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+}
+
+.voteButton {
+    opacity: 1;
+}
+
+.voteButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.heart:hover {
+    animation-play-state: running;
+}
+.heart:after {
+    left: 0;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transform-origin: 100% 100%;
+    -moz-transform-origin: 100% 100%;
+    -ms-transform-origin: 100% 100%;
+    -o-transform-origin: 100% 100%;
+    transform-origin: 100% 100%;
+}
