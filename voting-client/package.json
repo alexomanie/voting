@@ -6,17 +6,21 @@
         "@testing-library/jest-dom": "^4.2.4",
         "@testing-library/react": "^9.3.2",
         "@testing-library/user-event": "^7.1.2",
-        "@theme-ui/presets": "^0.3.0",
         "axios": "^0.19.2",
+        "postcss": "^8.1.9",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-flip-toolkit": "^7.0.12",
         "react-router-dom": "^5.2.0",
         "react-scripts": "3.4.1",
         "socket.io-client": "^2.3.0",
-        "theme-ui": "^0.3.1"
+        "tailwindcss": "^2.0.1"
     },
     "scripts": {
+        "build:tailwind:dev": "tailwindcss build src/styles.css -o src/tailwind.output.css",
+        "build:tailwind:prod": "cross-env NODE_ENV=production tailwindcss build src/styles.css -o src/tailwind.output.css",
+        "prestart": "npm run build:tailwind:dev",
+        "prebuild": "npm run build:tailwind:prod",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
@@ -38,6 +42,7 @@
         ]
     },
     "devDependencies": {
-        "autoprefixer": "^9.8.0"
+        "autoprefixer": "^10.0.2",
+        "cross-env": "^7.0.2"
     }
 }
