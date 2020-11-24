@@ -43,7 +43,7 @@ function App() {
 
         ws.current.on('delete', (id) => {
             setQuestions((questions) =>
-                questions.filter((question) => question._id !== id),
+                questions.filter((question) => question._id !== id)
             );
         });
         ws.current.on('complete', (message) => {
@@ -100,10 +100,8 @@ function App() {
 
     return (
         <div className="min-h-screen bg-gray-100  flex flex-col justify-center">
-            <div>
-                <Header membersOnline={connectedUsers}></Header>
-            </div>
-            <div className="relative  my-2 py-6 sm:py-12 sm:max-w-6xl sm:mx-auto">
+            <Header membersOnline={connectedUsers}></Header>
+            <div className="relative  my-2 py-6 sm:py-12 sm:mx-4 lg:mx-auto lg:w-3/4">
                 <QuestionForm handleClick={postNewQuestion}></QuestionForm>
 
                 <Flipper

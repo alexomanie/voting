@@ -1,49 +1,7 @@
-version: '3.5'
+version: '3.7'
 volumes:
     traefik:
 services:
-    duckdns:
-        image: linuxserver/duckdns
-        container_name: duckdns
-        restart: always
-        environment:
-            - TZ=Europe/Berlin
-            - SUBDOMAINS=cpvoting, cpapi
-            - TOKEN=${DUCKDNS_TOKEN}
-            - LOG_FILE=false #optional
-
-    traefik:
-        image: 'traefik:v2.2'
-        privileged: true
-        container_name: 'traefik'
-        command:
-            - '--api.insecure=true'
-            - '--providers.docker=true'
-            - '--log.level=DEBUG'
-            - '--providers.docker.exposedbydefault=false'
-            - '--certificatesresolvers.myresolver.acme.dnschallenge=true'
-            - '--certificatesresolvers.myresolver.acme.dnschallenge.provider=duckdns'
-            - '--certificatesresolvers.myresolver.acme.email=${DUCKDNS_MAIL}'
-            - '--certificatesresolvers.myresolver.acme.storage=/etc/traefik/acme.json'
-            - '--certificatesresolvers.myresolver.acme.caserver=https://acme-v02.api.letsencrypt.org/directory'
-            #- '--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory'
-            - '--entrypoints.websecure.address=:443'
-            - '--entrypoints.web.address=:80'
-        ports:
-            - '80:80'
-            - '443:443'
-            - '8080:8080'
-        environment:
-            - 'DUCKDNS_TOKEN=${DUCKDNS_TOKEN}'
-        volumes:
-            - 'traefik:/etc/traefik'
-            - '/var/run/docker.sock:/var/run/docker.sock:ro'
-            # - '/var/run/balena.sock:/var/run/docker.sock:ro'
-    mongo:
-        image: mongo
-        container_name: mongo
-        ports:
-            - '27017:27017'
     voting-api:
         build: ./voting-backend
         ports:

@@ -2,9 +2,9 @@ import React from 'react';
 
 export const Header = ({ membersOnline }) => {
     return (
-        <header className="text-white">
+        <header className="text-white mt-0 fixed w-full top-0">
             <div className="bg-gray-600 flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
-                <a className="flex title-font font-medium items-center mb-4 md:mb-0">
+                <div className="flex title-font font-medium items-center mb-4 md:mb-0">
                     <svg
                         width="32"
                         height="32"
@@ -27,8 +27,8 @@ export const Header = ({ membersOnline }) => {
                         />
                     </svg>
 
-                    <span class="ml-3 text-xl">Votissimo</span>
-                </a>
+                    <span className="ml-3 text-xl">Pollerr</span>
+                </div>
                 <div className="flex flex-row items-center self-center text-md items-center">
                     <div className="font-medium title-font">
                         online: {membersOnline}

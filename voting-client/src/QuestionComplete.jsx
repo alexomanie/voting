@@ -5,17 +5,17 @@ import './styles.css';
 export const QuestionComplete = React.memo(({ question, handleDelete }) => {
     return (
         <Flipped flipId={question._id}>
-            <div className="relative px-4 py-4 bg-gray-400 shadow-lg md:rounded-lg md:p-4 my-2">
+            <div className="relative px-4 py-4 bg-gray-300 shadow-lg md:rounded-lg md:p-4 my-2">
                 <div className="mx-auto">
                     <div className="display: flex justify-between">
-                        <div className="text-base leading-6 space-y-4 text-gray-200 italic sm:text-lg sm:leading-7">
+                        <div className="text-base leading-6 space-y-4 text-gray-500 italic sm:text-lg sm:leading-7">
                             <p>{question.text}</p>
                         </div>
                         <div>
                             <div className="display: flex justify-items-start">
                                 <div
                                     onClick={() => handleDelete(question._id)}
-                                    className="bg-red-400 hover:bg-red-600 text-white shadow-md p-2 cursor-pointer rounded-md ml-2 mt-2"
+                                    className="bg-red-500 hover:bg-red-600 text-white shadow-md p-2 cursor-pointer rounded-md ml-2 mt-2"
                                 >
                                     <svg
                                         width="20"
