@@ -2,6 +2,20 @@ import React from 'react';
 import { Flipped } from 'react-flip-toolkit';
 import './styles.css';
 
+const voteCompleted = (questionId) => {
+    return (
+        JSON.parse(localStorage.votedQuestionIds).findIndex(
+            (id) => id === questionId
+        ) !== -1
+    );
+};
+
+const getVotingStyle = (questionId) => {
+    return voteCompleted(questionId)
+        ? 'cursor-not-allowed opacity-50'
+        : 'cursor-pointer hover:border-green-600 hover:text-green-600';
+};
+
 export const Question = React.memo(
     ({ question, handleVote, handleComplete, handleDelete, ...rest }) => {
         return (
@@ -15,15 +29,21 @@ export const Question = React.memo(
                                 </div>
                                 <div>
                                     <div
-                                        onClick={() => handleVote(question._id)}
-                                        className="shadow-md rounded-full self-center border-2 border-gray-600 cursor-pointer hover:border-green-500"
+                                        onClick={
+                                            !voteCompleted(question._id)
+                                                ? () => handleVote(question._id)
+                                                : () => {}
+                                        }
+                                        className={`shadow-md rounded-full self-center border-2 border-gray-600 text-gray-600 ${getVotingStyle(
+                                            question._id
+                                        )}`}
                                     >
                                         <svg
                                             width="32"
                                             height="32"
                                             viewBox="0 0 32 32"
                                             fill="none"
-                                            className="stroke-current text-gray-600 hover:text-green-600"
+                                            className="stroke-current"
                                             xmlns="http://www.w3.org/2000/svg"
                                         >
                                             <path
@@ -106,16 +126,7 @@ export const Question = React.memo(
                         </div>
                     </div>
                 </div>
-                {/* 
-                                    disabled={
-                                        JSON.parse(
-                                            localStorage.votedQuestionIds,
-                                        ).findIndex(
-                                            (id) => id === question._id,
-                                        ) !== -1
-                                    }
-                                  */}
             </Flipped>
         );
-    },
+    }
 );
