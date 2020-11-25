@@ -6,6 +6,7 @@ import { Header } from './Header';
 import axios from 'axios';
 import { QuestionForm } from './QuestionForm';
 import './tailwind.output.css';
+import { Flipped, Flipper } from 'react-flip-toolkit';
 
 const api_base_url = process.env.REACT_APP_API_URL
     ? process.env.REACT_APP_API_URL
@@ -58,7 +59,6 @@ function App() {
         });
         ws.current.on('vote', (message) => {
             setQuestions((questions) => {
-                console.log(questions);
                 return [...questions]
                     .map((question) => {
                         if (question._id === message._id)
@@ -99,35 +99,38 @@ function App() {
             <Header membersOnline={connectedUsers}></Header>
             <div className="mt-4 sm:mx-4 lg:mx-auto lg:w-3/4">
                 <QuestionForm handleClick={postNewQuestion}></QuestionForm>
+                <Flipper flipKey={questions.map((q) => q._id).join('')}>
+                    <Flipped flipId="list">
+                        <ul>
+                            {questions
+                                .filter((ele) => ele.complete === false)
+                                .map((question, index) => (
+                                    <Question
+                                        index={index}
+                                        key={`open-${index}`}
+                                        handleVote={vote}
+                                        handleComplete={complete}
+                                        handleDelete={deleteQuestion}
+                                        question={question}
+                                    ></Question>
+                                ))}
+                        </ul>
+                    </Flipped>
+                </Flipper>
 
-                <div className="divide-y divide-gray-300">
-                    <div>
-                        {questions
-                            .filter((ele) => ele.complete === false)
-                            .map((question, index) => (
-                                <Question
-                                    index={index}
-                                    handleVote={vote}
-                                    handleComplete={complete}
-                                    handleDelete={deleteQuestion}
-                                    question={question}
-                                ></Question>
-                            ))}
-                    </div>
-
-                    <div>
-                        {questions
-                            .filter((ele) => ele.complete === true)
-                            .map((question, index) => (
-                                <QuestionComplete
-                                    index={index}
-                                    handleVote={vote}
-                                    handleComplete={complete}
-                                    handleDelete={deleteQuestion}
-                                    question={question}
-                                ></QuestionComplete>
-                            ))}
-                    </div>
+                <div>
+                    {questions
+                        .filter((ele) => ele.complete === true)
+                        .map((question, index) => (
+                            <QuestionComplete
+                                index={index}
+                                key={`complete-${index}`}
+                                handleVote={vote}
+                                handleComplete={complete}
+                                handleDelete={deleteQuestion}
+                                question={question}
+                            ></QuestionComplete>
+                        ))}
                 </div>
             </div>
         </div>
