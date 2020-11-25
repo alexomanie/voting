@@ -2,8 +2,8 @@ import React from 'react';
 
 export const Header = ({ membersOnline }) => {
     return (
-        <header className="text-white mt-0 w-full top-0">
-            <div className="bg-gray-600 flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
+        <header className="text-white min-w-full container">
+            <div className="bg-gray-600 min-w-full flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
                 <div className="flex title-font font-medium items-center mb-4 md:mb-0">
                     <svg
                         width="32"

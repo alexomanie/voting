@@ -13,13 +13,13 @@ export const QuestionForm = ({ handleClick }) => {
     };
     return (
         <div className="display: flex flex-row mb-8 ">
-            <textarea
+            <input
                 value={question}
                 placeholder="Frage eingeben"
                 onKeyDown={(event) => onKeyDownHandler(event)}
                 onChange={(event) => setQuestion(event.target.value)}
-                className="w-full bg-white rounded border border-gray-300 focus:border-green-500 h-16 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-            ></textarea>
+                className="w-full bg-white rounded border border-gray-300 focus:border-green-500 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+            ></input>
             <div
                 onClick={() => {
                     submitQuestion();
