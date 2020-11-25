@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import { Question } from './Question';
-import { QuestionComplete } from './QuestionComplete';
+import { QuestionCompleteList } from './QuestionCompleteList';
 import { Header } from './Header';
 import axios from 'axios';
 import { QuestionForm } from './QuestionForm';
@@ -118,20 +118,10 @@ function App() {
                     </Flipped>
                 </Flipper>
 
-                <div>
-                    {questions
-                        .filter((ele) => ele.complete === true)
-                        .map((question, index) => (
-                            <QuestionComplete
-                                index={index}
-                                key={`complete-${index}`}
-                                handleVote={vote}
-                                handleComplete={complete}
-                                handleDelete={deleteQuestion}
-                                question={question}
-                            ></QuestionComplete>
-                        ))}
-                </div>
+                <QuestionCompleteList
+                    handleDelete={deleteQuestion}
+                    questions={questions.filter((ele) => ele.complete === true)}
+                ></QuestionCompleteList>
             </div>
         </div>
     );
