@@ -5,7 +5,6 @@ import { QuestionComplete } from './QuestionComplete';
 import { Header } from './Header';
 import axios from 'axios';
 import { QuestionForm } from './QuestionForm';
-import { Flipper, Flipped } from 'react-flip-toolkit';
 import './tailwind.output.css';
 
 const api_base_url = process.env.REACT_APP_API_URL
@@ -101,117 +100,37 @@ function App() {
             <div className="mt-4 sm:mx-4 lg:mx-auto lg:w-3/4">
                 <QuestionForm handleClick={postNewQuestion}></QuestionForm>
 
-                <Flipper
-                    spring={'noWobble'}
-                    flipKey={questions.map((q) => q._id).join('')}
-                >
-                    <div className="divide-y divide-gray-300">
-                        <Flipped flipId="list-open">
-                            <div>
-                                {questions
-                                    .filter((ele) => ele.complete === false)
-                                    .map((question, index) => (
-                                        <Flipped
-                                            inverseFlipId="list-open"
-                                            key={question._id}
-                                            stagger={false}
-                                        >
-                                            <Question
-                                                index={index}
-                                                handleVote={vote}
-                                                handleComplete={complete}
-                                                handleDelete={deleteQuestion}
-                                                question={question}
-                                            ></Question>
-                                        </Flipped>
-                                    ))}
-                            </div>
-                        </Flipped>
-                        <Flipped flipId="list-complete">
-                            <div>
-                                {questions
-                                    .filter((ele) => ele.complete === true)
-                                    .map((question, index) => (
-                                        <Flipped
-                                            key={question._id}
-                                            inverseFlipId="list-complete"
-                                        >
-                                            <QuestionComplete
-                                                index={index}
-                                                handleVote={vote}
-                                                handleComplete={complete}
-                                                handleDelete={deleteQuestion}
-                                                question={question}
-                                            ></QuestionComplete>
-                                        </Flipped>
-                                    ))}
-                            </div>
-                        </Flipped>
+                <div className="divide-y divide-gray-300">
+                    <div>
+                        {questions
+                            .filter((ele) => ele.complete === false)
+                            .map((question, index) => (
+                                <Question
+                                    index={index}
+                                    handleVote={vote}
+                                    handleComplete={complete}
+                                    handleDelete={deleteQuestion}
+                                    question={question}
+                                ></Question>
+                            ))}
                     </div>
-                </Flipper>
+
+                    <div>
+                        {questions
+                            .filter((ele) => ele.complete === true)
+                            .map((question, index) => (
+                                <QuestionComplete
+                                    index={index}
+                                    handleVote={vote}
+                                    handleComplete={complete}
+                                    handleDelete={deleteQuestion}
+                                    question={question}
+                                ></QuestionComplete>
+                            ))}
+                    </div>
+                </div>
             </div>
         </div>
-        /*  <div
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                minHeight: '100vh',
-            }}
-        >
-            <div
-                sx={{
-                    marginTop: 3,
-                    width: '9/12',
-                    mx: 'auto',
-                    flex: '1 1 auto',
-                }}
-            >
-                <Container>
-                    <Header membersOnline={connectedUsers}></Header>
-                </Container>
-                <Container sx={{ mb: 3 }}>
-                    <QuestionForm handleClick={postNewQuestion}></QuestionForm>
-                </Container>
-                <Container>
-                    <Flipper
-                        spring={'noWobble'}
-                        flipKey={questions.map((q) => q._id).join('')}
-                    >
-                        <Flipped flipId={'list'}>
-                            <div>
-                                <div>
-                                    {questions
-                                        .filter((ele) => ele.complete === false)
-                                        .map((question, index) => (
-                                            <Question
-                                                index={index}
-                                                key={question._id}
-                                                handleVote={vote}
-                                                handleComplete={complete}
-                                                question={question}
-                                            ></Question>
-                                        ))}
-                                </div>
-                                <div>
-                                    {questions
-                                        .filter((ele) => ele.complete === true)
-                                        .map((question, index) => (
-                                            <Question
-                                                index={index}
-                                                key={question._id}
-                                                handleVote={vote}
-                                                handleComplete={complete}
-                                                handleDelete={deleteQuestion}
-                                                question={question}
-                                            ></Question>
-                                        ))}
-                                </div>
-                            </div>
-                        </Flipped>
-                    </Flipper>
-                </Container>
-            </div>
-        </div> */
     );
 }
 

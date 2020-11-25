@@ -22,17 +22,21 @@ export const Question = React.memo(
             <div className="relative px-4 py-4 bg-white shadow-lg md:rounded-lg md:p-4 my-2">
                 <div className="mx-auto">
                     <div className="divide-y divide-gray-200">
-                        <div className="display: flex justify-between">
+                        <div className="display: flex justify-between mb-2">
                             <div className="text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                                 <p>{question.text}</p>
                             </div>
-                            <div>
+                            <div className="display: flex flex-row items-center">
+                                <p className="text-center mr-2 font-bold  text-gray-700">
+                                    {question.votes}
+                                </p>
                                 <div
-                                    onClick={
+                                    /*                                     onClick={
                                         !voteCompleted(question._id)
                                             ? () => handleVote(question._id)
                                             : () => {}
-                                    }
+                                    } */
+                                    onClick={() => handleVote(question._id)}
                                     className={`shadow-md rounded-full self-center border-2 border-gray-600 text-gray-600 ${getVotingStyle(
                                         question._id
                                     )}`}
@@ -53,9 +57,6 @@ export const Question = React.memo(
                                         />
                                     </svg>
                                 </div>
-                                <p className="text-center mt-2 font-bold  text-gray-700">
-                                    {question.votes}
-                                </p>
                             </div>
                         </div>
                         <div className="display: flex justify-items-start">
