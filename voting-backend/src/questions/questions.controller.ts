@@ -30,7 +30,7 @@ export class QuestionsController {
 
     @Put(':id')
     async editQuestion(@Param('id') id, @Body() payload: EditQuestionDto) {
-        console.log(id);
+        console.log(id, payload.text);
         await this.questionsService.editQuestion(id, payload.text);
         this.questionsGateway.broadCastEditQuestion(id, payload.text);
     }

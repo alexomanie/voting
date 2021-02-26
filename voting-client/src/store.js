@@ -8,10 +8,15 @@ export const useStore = create((set) => ({
 //   addQuestion: (question) => set((state) => ({ questions: questions.concat(question) })),
 //   deleteQuestion: (questionId) =>
 //     set((state) => ({ questions: questions.filter((q) => q._id !== questionId) })),
-//   editQuestion: (questionId, updatedQuestionText) => set(state => ({
-//       const questionIndex = state.questions.findIndex(q => q._id === questionId)
-//       state.questions.text = updatedQuestionText;
-//   }))
+  editQuestion: (questionId, updatedQuestionText) => set((state) => {
+      const updatedQuestions =  state.questions.map(question => {
+          if (question._id === questionId) {
+              return {...question, text: updatedQuestionText}
+          }
+          return question;
+      })
+      return {questions: updatedQuestions};
+  })
 }))
 
 export const useVotedQuestionsStore = create(persist(

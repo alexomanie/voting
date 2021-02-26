@@ -16,26 +16,24 @@ const api_base_url = process.env.REACT_APP_API_URL
 function App() {
   const ws = useRef(null)
   const [connectedUsers, setConnectedUsers] = useState(0)
-  const set = useStore((state) => state.set)
+  const {editQuestion, set, questions} = useStore((state) =>  ({set: state.set, editQuestion: state.editQuestion, questions: state.questions}))
   const setVotedQuestion = useVotedQuestionsStore((state) => state.set)
-
-  const questions = useStore((state) => state.questions)
-  const votedQuestionIds = useVotedQuestionsStore((state) => state.questions)
-  console.log(questions)
+  const unsub1 = useStore.subscribe(console.log, state => state.questions)
+  
   useEffect(() => {
     ws.current = io(api_base_url)
 
     return () => {
       ws.current.disconnect()
+      unsub1()
     }
   }, [])
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(`${api_base_url}/api/v1/questions`)
-      console.log(result)
       set((state) => {
-        state.questions = result.data
+        state.questions = result.data.sort((a,b) => b.votes - a.votes)
       })
     }
     ws.current.on("question", (message) => {
@@ -60,15 +58,11 @@ function App() {
       set((state) => {
         const index = state.questions.findIndex((q) => q._id === id)
         if (index !== -1) state.questions[index].votes++
+        state.questions.sort((a, b) => b.votes - a.votes);
       })
     })
     ws.current.on("edit", (payload) => {
-        console.log('edit:', payload)
-        set((state) => {
-          const index = state.questions.findIndex((q) => q._id === payload.id)
-          console.log(index)
-          if (index !== -1) state.questions[index].text = payload.text
-        })
+        editQuestion(payload.id, payload.text)
       })
     fetchData()
     ws.current.on("users", (message) => {
