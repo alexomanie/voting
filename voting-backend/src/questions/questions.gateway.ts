@@ -9,6 +9,7 @@ import { Question } from './schemas/question.schema';
 @WebSocketGateway()
 export class QuestionsGateway
     implements OnGatewayConnection, OnGatewayDisconnect {
+
     @WebSocketServer() server;
     users = 0;
 
@@ -28,15 +29,19 @@ export class QuestionsGateway
         this.server.emit('question', question);
     }
 
+    broadCastEditQuestion(id: any, text: string) {
+        this.server.emit('edit', {id, text});
+    }
+
     broadCastQuestionDelete(id: any) {
         this.server.emit('delete', id);
     }
 
-    broadCastUpdatedQuestionVote(updatedQuestion: Question) {
-        this.server.emit('vote', updatedQuestion);
+    broadCastUpdatedQuestionVote(updatedQuestionId: string) {
+        this.server.emit('vote', updatedQuestionId);
     }
 
-    broadCastQuestionComplete(completedQuestion: Question) {
-        this.server.emit('complete', completedQuestion);
+    broadCastQuestionComplete(completedQuestionId: string) {
+        this.server.emit('complete', completedQuestionId);
     }
 }

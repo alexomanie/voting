@@ -3,7 +3,8 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class Question extends Document {
-    @Prop({ required: true })
+
+        @Prop({ required: true })
     text: string;
 
     @Prop({ default: 0 })
