@@ -8,6 +8,7 @@ import { QuestionForm } from "./QuestionForm"
 import "./tailwind.output.css"
 import { Flipped, Flipper } from "react-flip-toolkit"
 import { useStore, useVotedQuestionsStore } from "./store"
+import { EditQuestionModal } from "./EditQuestionModal"
 
 const api_base_url = process.env.REACT_APP_API_URL
   ? process.env.REACT_APP_API_URL
@@ -16,10 +17,14 @@ const api_base_url = process.env.REACT_APP_API_URL
 function App() {
   const ws = useRef(null)
   const [connectedUsers, setConnectedUsers] = useState(0)
-  const {editQuestion, set, questions} = useStore((state) =>  ({set: state.set, editQuestion: state.editQuestion, questions: state.questions}))
+  const { editQuestion, set, questions } = useStore((state) => ({
+    set: state.set,
+    editQuestion: state.editQuestion,
+    questions: state.questions,
+  }))
   const setVotedQuestion = useVotedQuestionsStore((state) => state.set)
-  const unsub1 = useStore.subscribe(console.log, state => state.questions)
-  
+  const unsub1 = useStore.subscribe(console.log, (state) => state.questions)
+
   useEffect(() => {
     ws.current = io(api_base_url)
 
@@ -33,7 +38,7 @@ function App() {
     const fetchData = async () => {
       const result = await axios(`${api_base_url}/api/v1/questions`)
       set((state) => {
-        state.questions = result.data.sort((a,b) => b.votes - a.votes)
+        state.questions = result.data.sort((a, b) => b.votes - a.votes)
       })
     }
     ws.current.on("question", (message) => {
@@ -58,12 +63,12 @@ function App() {
       set((state) => {
         const index = state.questions.findIndex((q) => q._id === id)
         if (index !== -1) state.questions[index].votes++
-        state.questions.sort((a, b) => b.votes - a.votes);
+        state.questions.sort((a, b) => b.votes - a.votes)
       })
     })
     ws.current.on("edit", (payload) => {
-        editQuestion(payload.id, payload.text)
-      })
+      editQuestion(payload.id, payload.text)
+    })
     fetchData()
     ws.current.on("users", (message) => {
       setConnectedUsers(message)
@@ -89,9 +94,8 @@ function App() {
 
   const edit = async (id, updatedText) => {
     await axios.put(`${api_base_url}/api/v1/questions/${id}`, {
-        text: updatedText
+      text: updatedText,
     })
-
   }
 
   const deleteQuestion = async (id) => {
@@ -103,6 +107,7 @@ function App() {
       <Header membersOnline={connectedUsers}></Header>
       <div className="mt-4 sm:mx-4 lg:mx-auto lg:w-3/4">
         <QuestionForm handleClick={postNewQuestion}></QuestionForm>
+        <EditQuestionModal handleEdit={edit}></EditQuestionModal>
         <Flipper flipKey={questions.map((q) => q._id).join("")}>
           <Flipped flipId="list">
             <ul>
@@ -113,7 +118,6 @@ function App() {
                     index={index}
                     key={`open-${index}`}
                     handleVote={vote}
-                    handleEdit={edit}
                     handleComplete={complete}
                     handleDelete={deleteQuestion}
                     question={question}

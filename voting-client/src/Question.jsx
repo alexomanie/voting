@@ -2,7 +2,6 @@ import React from "react"
 import { Flipped } from "react-flip-toolkit"
 import "./styles.css"
 import { useVotedQuestionsStore, useStore } from "./store"
-import { useState } from "react"
 
 const getVotingStyle = (votedQuestionIds, questionId) => {
   return votedQuestionIds.includes(questionId)
@@ -11,43 +10,23 @@ const getVotingStyle = (votedQuestionIds, questionId) => {
 }
 
 export const Question = React.memo(
-  ({ question, handleVote, handleComplete, handleEdit, index, ...rest }) => {
+  ({ question, handleVote, handleComplete }) => {
     const votedQuestionIds = useVotedQuestionsStore((state) => state.votedQuestionIds)
     const flipId = `item-${question._id}`
-    const [editMode, toggleEditMode] = useState(false)
-    const {editQuestion, set} = useStore((state) =>  ({set: state.set, editQuestion: state.editQuestion}))
-    const onKeyDownHandler = (event) => {
-      if (event.keyCode === 13) {
-        handleEdit(question._id, question.text)
-        toggleEditMode(false)
-      }
-    }
+    const { set } = useStore((state) => ({
+      set: state.set,
+      editQuestion: state.editQuestion,
+    }))
     return (
       <Flipped flipId={flipId}>
         <li className="relative px-4 py-4 bg-white shadow-lg md:rounded-lg md:p-4 my-2">
           <div className="mx-auto">
             <div className="divide-y divide-gray-200">
               <div className="display: flex justify-between mb-2">
-                {!editMode && (
-                  <div className="text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                    <p>{question.text}</p>
-                  </div>
-                )}
-                {editMode && (
-                  <div className="text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                    <input
-                      value={question.text}
-                      placeholder="Frage eingeben"
-                      onKeyDown={(event) => onKeyDownHandler(event)}
-                      onChange={(event) => {
-                          editQuestion(question._id, event.target.value)
-                          //setEditedText(event.target.value);
-                        }
-                      }
-                      className="w-full bg-white rounded border border-gray-300 focus:border-green-500 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-                    ></input>
-                  </div>
-                )}
+                <div className="text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <p>{question.text}</p>
+                </div>
+
                 <div className="display: flex flex-row items-center">
                   <p className="text-center mr-2 font-bold  text-gray-700">{question.votes}</p>
                   <div
@@ -100,7 +79,12 @@ export const Question = React.memo(
                   </svg>
                 </div>
                 <div
-                  onClick={() => toggleEditMode(true)}
+                  onClick={() =>
+                    set((state) => {
+                      state.editModeActive = true
+                      state.editedQuestionId = question._id
+                    })
+                  }
                   className="bg-white hover:bg-blue-100 text-white shadow-md p-2 cursor-pointer rounded-md ml-2 mt-2"
                 >
                   <svg

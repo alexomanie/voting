@@ -1,5 +1,4 @@
 import React from 'react';
-import { Flipped } from 'react-flip-toolkit';
 import './styles.css';
 
 export const QuestionComplete = React.memo(({ question, handleDelete }) => {
