@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { Question } from './schemas/question.schema';
 import { QuestionsService } from './questions.service';
-import { CreateQuestionDto } from './dtos/create-question.dto';
+import { CreateQuestionDto, EditQuestionDto } from './dtos/create-question.dto';
 import { QuestionsGateway } from './questions.gateway';
 import { UpdateVotesDto } from './dtos/update-votes.dto';
 
@@ -28,18 +28,26 @@ export class QuestionsController {
         this.questionsGateway.broadCastNewQuestion(newQuestion);
     }
 
+    @Put(':id')
+    async editQuestion(@Param('id') id, @Body() payload: EditQuestionDto) {
+        console.log(id, payload.text);
+        await this.questionsService.editQuestion(id, payload.text);
+        this.questionsGateway.broadCastEditQuestion(id, payload.text);
+    }
+
     @Put(':id/votes')
     async updateVotes(@Param('id') id) {
         console.log(id);
         const updatedQuestion = await this.questionsService.updateVotes(id);
         console.log(updatedQuestion);
-        this.questionsGateway.broadCastUpdatedQuestionVote(updatedQuestion);
+        this.questionsGateway.broadCastUpdatedQuestionVote(id);
     }
 
     @Put(':id/complete')
     async complete(@Param('id') id) {
         const completedQuestion = await this.questionsService.complete(id);
-        this.questionsGateway.broadCastQuestionComplete(completedQuestion);
+        console.log(completedQuestion);
+        this.questionsGateway.broadCastQuestionComplete(id);
     }
 
     @Delete(':id')

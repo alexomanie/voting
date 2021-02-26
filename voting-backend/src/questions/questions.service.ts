@@ -6,6 +6,7 @@ import { CreateQuestionDto } from './dtos/create-question.dto';
 
 @Injectable()
 export class QuestionsService {
+
     constructor(
         @InjectModel(Question.name) private questionModel: Model<Question>,
     ) {}
@@ -13,6 +14,10 @@ export class QuestionsService {
     async create(createCatDto: CreateQuestionDto): Promise<Question> {
         const newQuestion = new this.questionModel(createCatDto);
         return newQuestion.save();
+    }
+
+    async editQuestion(id: any, text: string) {
+        await this.questionModel.updateOne({ _id: id }, { text: text });
     }
 
     async findAll(): Promise<Question[]> {
