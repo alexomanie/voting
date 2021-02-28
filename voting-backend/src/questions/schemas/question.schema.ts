@@ -13,6 +13,9 @@ export class Question extends Document {
     @Prop({ default: false })
     complete: boolean;
 
+    @Prop({default: false})
+    edited: boolean;
+
     @Prop({ default: Date.now })
     created: Date;
 }

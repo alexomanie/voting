@@ -44,4 +44,8 @@ export class QuestionsGateway
     broadCastQuestionComplete(completedQuestionId: string) {
         this.server.emit('complete', completedQuestionId);
     }
+
+    broadCastStartEditQuestion(id: string) {
+        this.server.emit('startEdit', id);
+    }
 }

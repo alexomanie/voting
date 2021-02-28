@@ -23,14 +23,12 @@ function App() {
     questions: state.questions,
   }))
   const setVotedQuestion = useVotedQuestionsStore((state) => state.set)
-  const unsub1 = useStore.subscribe(console.log, (state) => state.questions)
 
   useEffect(() => {
     ws.current = io(api_base_url)
 
     return () => {
       ws.current.disconnect()
-      unsub1()
     }
   }, [])
 
@@ -69,6 +67,12 @@ function App() {
     ws.current.on("edit", (payload) => {
       editQuestion(payload.id, payload.text)
     })
+    ws.current.on("startEdit", (id) => {
+      set(state => {
+        const index = state.questions.findIndex((q) => q._id === id)
+        if (index !== -1) state.questions[index].edited = true
+      })
+    })
     fetchData()
     ws.current.on("users", (message) => {
       setConnectedUsers(message)
@@ -98,6 +102,10 @@ function App() {
     })
   }
 
+  const startEdit = async(id) => {
+    await axios.put(`${api_base_url}/api/v1/questions/${id}/startedit`)
+  }
+
   const deleteQuestion = async (id) => {
     await axios.delete(`${api_base_url}/api/v1/questions/${id}/`)
   }
@@ -118,6 +126,7 @@ function App() {
                     index={index}
                     key={`open-${index}`}
                     handleVote={vote}
+                    startEdit={startEdit}
                     handleComplete={complete}
                     handleDelete={deleteQuestion}
                     question={question}

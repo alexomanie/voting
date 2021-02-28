@@ -7,6 +7,7 @@ import { CreateQuestionDto } from './dtos/create-question.dto';
 @Injectable()
 export class QuestionsService {
 
+
     constructor(
         @InjectModel(Question.name) private questionModel: Model<Question>,
     ) {}
@@ -17,7 +18,7 @@ export class QuestionsService {
     }
 
     async editQuestion(id: any, text: string) {
-        await this.questionModel.updateOne({ _id: id }, { text: text });
+        await this.questionModel.updateOne({ _id: id }, { text: text, edited: false });
     }
 
     async findAll(): Promise<Question[]> {
@@ -35,6 +36,11 @@ export class QuestionsService {
 
     async complete(id: string) {
         await this.questionModel.updateOne({ _id: id }, { complete: true });
+        return this.questionModel.findById(id).exec();
+    }
+
+    async startEdit(id: any) {
+        await this.questionModel.updateOne({ _id: id }, { edited: true });
         return this.questionModel.findById(id).exec();
     }
 }

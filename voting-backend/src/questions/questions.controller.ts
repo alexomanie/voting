@@ -50,6 +50,13 @@ export class QuestionsController {
         this.questionsGateway.broadCastQuestionComplete(id);
     }
 
+    @Put(':id/startedit')
+    async startEdit(@Param('id') id) {
+        const editedQuestion = await this.questionsService.startEdit(id);
+        console.log(editedQuestion);
+        this.questionsGateway.broadCastStartEditQuestion(id);
+    }
+
     @Delete(':id')
     async deleteQuestion(@Param('id') id) {
         await this.questionsService.delete(id);

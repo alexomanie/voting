@@ -18,7 +18,7 @@ export const useStore = create((set, get) => ({
     set((state) => {
       const updatedQuestions = state.questions.map((question) => {
         if (question._id === questionId) {
-          return { ...question, text: updatedQuestionText }
+          return { ...question, text: updatedQuestionText, edited: false }
         }
         return question
       })

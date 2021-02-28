@@ -28,7 +28,6 @@ export const EditQuestionModal = ({ handleEdit }) => {
           value={question.text}
           onChange={(event) => {
             editQuestion(question._id, event.target.value)
-            //setEditedText(event.target.value);
           }}
           className="w-full bg-white rounded border border-gray-300 focus:border-green-500 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
         ></input>
@@ -36,7 +35,7 @@ export const EditQuestionModal = ({ handleEdit }) => {
           className="bg-green-500 hover:bg-green-600 text-white shadow-md p-2 cursor-pointer rounded-md mt-4 w-1/4 place-self-center"
           onClick={closeModal}
         >
-          close
+          Speichern
         </button>
       </div>
     </ReactModal>
